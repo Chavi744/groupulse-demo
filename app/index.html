@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GroupPulse — תיעוד חכם לטיפול קבוצתי</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="stage">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12h3l2-6 4 14 3-9 2 4h4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><h1>GroupPulse</h1><span>תיעוד חכם לטיפול קבוצתי</span></div>
+    </div>
+    <nav class="nav">
+      <a data-view="dashboard" class="active"><svg viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7M5 10v9h14v-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>לוח בקרה</a>
+      <a data-view="dictation"><svg viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="11" rx="3" stroke="currentColor" stroke-width="2"/><path d="M5 11a7 7 0 0014 0M12 18v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>מפגש חדש</a>
+      <a data-view="results"><svg viewBox="0 0 24 24" fill="none"><path d="M6 3h9l4 4v14H6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h7M9 16h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>סיכומים</a>
+      <a data-view="patients"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="9" r="2.4" stroke="currentColor" stroke-width="2"/><path d="M4 19c0-3 2.5-5 5-5s5 2 5 5M15 18c0-2 1.4-3.5 3-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>קבוצות ומטופלים</a>
+      <a data-view="security"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>אבטחה ופרטיות</a>
+      <a data-view="settings"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2 2M16.4 16.4l2 2M18.4 5.6l-2 2M7.6 16.4l-2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>הגדרות</a>
+    </nav>
+    <div class="side-foot">
+      <div id="mode-pill" class="mode-pill sim">🟠 מצב הדגמה</div>
+      <div class="secure-pill"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="11" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="2"/></svg>הצפנת AES-256 · HIPAA · GDPR</div>
+      <div class="user"><div class="ava">ד״ר</div><div><div class="nm">ד״ר יואב לוי</div><div class="rl">פסיכולוג קליני</div></div></div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="topbar">
+      <button id="hamburger" class="hamburger" title="תפריט"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="#0E2240" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+      <div class="pg"><h2 id="pg-title">לוח בקרה</h2><p id="pg-sub"></p></div>
+      <div class="acts">
+        <span class="badge b-ai">AI מסייע · המטפל מחליט</span>
+        <button class="btn btn-primary go-dictation"><svg viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="11" rx="3" stroke="#fff" stroke-width="2"/><path d="M5 11a7 7 0 0014 0M12 18v3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>סכם מפגש חדש</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ===== לוח בקרה ===== -->
+      <section id="view-dashboard" class="view active">
+        <div class="grid kpis">
+          <div class="card pad kpi"><div class="v">3</div><div class="l">קבוצות פעילות</div></div>
+          <div class="card pad kpi"><div class="v">20</div><div class="l">מטופלים בקבוצות</div></div>
+          <div class="card pad kpi"><div class="v" style="color:#16A6B8">4.2 דק׳</div><div class="l">זמן תיעוד ממוצע למפגש (במקום ~45 דק׳)</div></div>
+          <div class="card pad kpi"><div class="v" style="color:#149E78">100%</div><div class="l">רשומות מקושרות לתוכנית הטיפול</div></div>
+        </div>
+        <div class="grid dash-grid">
+          <div class="card pad">
+            <div class="section-title">הקבוצות שלי</div>
+            <div id="dash-groups"></div>
+          </div>
+          <div class="card pad">
+            <div class="section-title">איך זה עובד</div>
+            <p class="muted" style="font-size:13.5px;line-height:2">
+              <b>1.</b> בתום המפגש — המטפל מכתיב סיכום קצר (המטופלים <b>אינם מוקלטים</b>).<br>
+              <b>2.</b> ה-AI מתמלל ומייצר טיוטת SOAP קבוצתית + רשומה אישית לכל משתתף.<br>
+              <b>3.</b> <b>״חוט הזהב״</b> מקשר כל רשומה ליעדי תוכנית הטיפול — רצף מתועד לביקורת ולביטוח.<br>
+              <b>4.</b> המטפל עורך, מאשר וחותם. <b>דבר לא מתויק בלעדיו.</b>
+            </p>
+            <div class="divider"></div>
+            <button class="btn btn-primary btn-lg go-dictation" style="width:100%;justify-content:center">התחילו הדגמה חיה ←</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== הכתבה ===== -->
+      <section id="view-dictation" class="view">
+        <div class="dict-wrap">
+          <div class="card rec-card">
+            <span class="no-rec-pill">🔇 המטופלים אינם מוקלטים — רק הכתבת המטפל</span>
+            <button id="mic-btn" class="mic-btn" title="התחל/עצור הכתבה">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="11" rx="3" stroke="#fff" stroke-width="2"/><path d="M5 11a7 7 0 0014 0M12 18v3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <div class="timer" id="timer">00:00</div>
+            <div id="mic-label" class="muted" style="font-weight:700">לחצו להתחלת הכתבה</div>
+            <div class="wave" id="wave">
+              <i style="animation-delay:0s"></i><i style="animation-delay:.1s"></i><i style="animation-delay:.2s"></i><i style="animation-delay:.3s"></i><i style="animation-delay:.4s"></i><i style="animation-delay:.5s"></i><i style="animation-delay:.15s"></i><i style="animation-delay:.35s"></i><i style="animation-delay:.05s"></i><i style="animation-delay:.25s"></i><i style="animation-delay:.45s"></i><i style="animation-delay:.3s"></i><i style="animation-delay:.1s"></i>
+            </div>
+            <span class="hint">🔒 האודיו מומר לטקסט ונמחק מיידית — לא נשמרת הקלטה</span>
+          </div>
+
+          <div class="card pad">
+            <div class="section-title">תמלול הדיקטציה <span class="badge b-ai">ניתן לעריכה</span></div>
+            <textarea id="transcript" class="transcript" placeholder="התמלול יופיע כאן... אפשר גם להקליד ידנית או לטעון דוגמה מוכנה."></textarea>
+            <div class="dict-actions" style="margin-top:14px">
+              <button id="btn-sample" class="btn btn-ghost">📄 טען דיקטציה לדוגמה</button>
+              <button id="btn-sample-crisis" class="btn btn-danger">⚠️ דוגמה עם זיהוי מצב משבר</button>
+              <button id="btn-clear" class="btn btn-ghost">נקה</button>
+              <button id="btn-generate" class="btn btn-primary btn-lg">✨ צור טיוטות סיכום</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== עיבוד ===== -->
+      <section id="view-processing" class="view">
+        <div class="proc-wrap" id="proc-steps">
+          <div class="step">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="11" rx="3" stroke="#16A6B8" stroke-width="2"/><path d="M5 11a7 7 0 0014 0" stroke="#16A6B8" stroke-width="2"/></svg></div>
+            <div><b>תמלול רפואי</b><p>המרת הדיקטציה לטקסט קליני מדויק · האודיו נמחק</p></div><span class="st">ממתין</span>
+          </div>
+          <div class="step">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v4M8 21h8M12 17v4M4 10a8 8 0 0116 0c0 4-3 5-4 7H8c-1-2-4-3-4-7z" stroke="#16A6B8" stroke-width="2" stroke-linejoin="round"/></svg></div>
+            <div><b>ניתוח קליני (DSM-5 / CBT)</b><p>זיהוי משתתפים, תכנים קליניים וסימני מצוקה</p></div><span class="st">ממתין</span>
+          </div>
+          <div class="step">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M8 12a3 3 0 013-3h2M16 12a3 3 0 01-3 3h-2M10 12h4" stroke="#D9A620" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+            <div><b>״חוט הזהב״</b><p>קישור כל רשומה ליעדי תוכנית הטיפול וההיסטוריה</p></div><span class="st">ממתין</span>
+          </div>
+          <div class="step">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M6 3h9l4 4v14H6z" stroke="#16A6B8" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h7M9 16h7" stroke="#16A6B8" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <div><b>יצירת טיוטות</b><p>SOAP קבוצתי + רשומה אישית לכל משתתף — לאישור המטפל</p></div><span class="st">ממתין</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== תוצאות ===== -->
+      <section id="view-results" class="view">
+        <div id="crisis-banner" class="crisis-banner" style="display:none">
+          <div class="ic">🚨</div>
+          <div><b>התראת בטיחות — זוהו סימני מצוקה חריפה בדיקטציה</b><p id="crisis-text"></p></div>
+        </div>
+        <div class="hitl-banner">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" stroke="#1FC7D4" stroke-width="2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#1FC7D4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><b>Human-in-the-loop: אלו טיוטות בלבד</b><p>המטפל עורך, מאשר וחותם על כל רשומה. שום דבר אינו מתויק אוטומטית. <span id="engine-badge" class="badge b-ai" style="margin-inline-start:6px"></span></p></div>
+        </div>
+        <div class="tabs" id="tabs"></div>
+        <div id="note-area"></div>
+        <div class="card pad" style="margin-top:20px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
+          <div><b id="approve-count">0/6 רשומות אושרו</b><div class="muted" style="font-size:12.5px;margin-top:3px">תיוק אפשרי רק לאחר אישור המטפל על כל הרשומות</div></div>
+          <button id="btn-file" class="btn btn-success btn-lg" disabled>📁 תייק הכל בתיקי המטופלים</button>
+        </div>
+      </section>
+
+      <!-- ===== קבוצות ומטופלים ===== -->
+      <section id="view-patients" class="view">
+        <div class="grid p-grid" id="patients-grid"></div>
+      </section>
+
+      <!-- ===== אבטחה ===== -->
+      <section id="view-security" class="view">
+        <div class="grid sec-grid">
+          <div class="card pad sec-card"><div class="ic">🔇</div><div><b>המטופלים אינם מוקלטים</b><p>נקלטת רק דיקטציית המטפל לאחר המפגש. האודיו מתומלל ונמחק מיידית — הקלטה גולמית אינה נשמרת לעולם.</p></div></div>
+          <div class="card pad sec-card"><div class="ic">🔐</div><div><b>הצפנת AES-256 מקצה לקצה</b><p>כל הנתונים מוצפנים במנוחה ובתעבורה, בענן מאובטח (AWS/Azure) בתקני בריאות.</p></div></div>
+          <div class="card pad sec-card"><div class="ic">📜</div><div><b>HIPAA + GDPR</b><p>עמידה מלאה ברגולציית פרטיות רפואית אמריקאית ואירופית, כולל הסכמי BAA.</p></div></div>
+          <div class="card pad sec-card"><div class="ic">🚫</div><div><b>אפס אימון על נתוני מטופלים</b><p>נתוני מטופלים לעולם אינם משמשים לאימון מודלים חיצוניים — חוזית וטכנית.</p></div></div>
+          <div class="card pad sec-card"><div class="ic">✒️</div><div><b>המטפל תמיד מחליט</b><p>ה-AI מייצר טיוטות בלבד. כל אבחנה וכל סיכום מחייבים עריכה, אישור וחתימה של המטפל.</p></div></div>
+          <div class="card pad sec-card"><div class="ic">🚨</div><div><b>זיהוי מצבי משבר</b><p>המערכת מסמנת ביטויי מצוקה חריפה ואובדנות בדיקטציה ומציפה התראת בטיחות למטפל.</p></div></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- מודל הגדרות -->
+<div id="settings-modal" class="modal-bg">
+  <div class="modal">
+    <h3>הגדרות מנוע AI</h3>
+    <p>ללא מפתח — המערכת רצה ב<b>מצב הדגמה</b> (סימולציה מובנית, עובד תמיד גם בלי אינטרנט).
+       עם מפתח Anthropic — הטיוטות נוצרות <b>בזמן אמת על ידי Claude</b>. המפתח נשמר בדפדפן זה בלבד.</p>
+    <input id="api-key-input" type="password" placeholder="sk-ant-..." autocomplete="off">
+    <div class="row">
+      <button id="btn-close-modal" class="btn btn-ghost">סגור</button>
+      <button id="btn-save-key" class="btn btn-primary">שמור</button>
+    </div>
+  </div>
+</div>
+
+<div id="side-overlay" class="side-overlay"></div>
+<div id="toast" class="toast"></div>
+
+<script src="data.js"></script>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

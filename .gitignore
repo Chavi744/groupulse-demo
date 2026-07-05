@@ -1,0 +1,6 @@
+# רק אפליקציית הדמו נמצאת בגיט
+/*
+!/app
+!/.gitignore
+node_modules/
+*.log
