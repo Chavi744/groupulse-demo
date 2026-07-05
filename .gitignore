@@ -3,5 +3,6 @@
 !/app
 !/.gitignore
 !/README.md
+!/index.html
 node_modules/
 *.log
